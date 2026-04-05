@@ -1,0 +1,504 @@
+/* === Checkout Savings Banner (shown inside Monero description when selected) === */
+.xmr-checkout-discount {
+    background: linear-gradient(135deg, #fff7f0, #fff3e6);
+    border: 2px solid #FF6600;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-top: 12px;
+    text-align: center;
+}
+.xmr-checkout-discount .xmr-checkout-savings-inner,
+.xmr-checkout-savings-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    font-size: 15px;
+    line-height: 1.5;
+}
+.xmr-checkout-discount .xmr-savings-icon,
+.xmr-checkout-savings .xmr-savings-icon {
+    color: #FF6600;
+    font-size: 18px;
+    font-weight: bold;
+}
+.xmr-checkout-discount .xmr-original-price,
+.xmr-checkout-savings .xmr-original-price,
+.xmr-discount-banner .xmr-original-price {
+    text-decoration: line-through;
+    color: #999;
+    font-size: 16px;
+}
+.xmr-checkout-discount .xmr-arrow-icon,
+.xmr-checkout-savings .xmr-arrow-icon,
+.xmr-discount-banner .xmr-arrow-icon {
+    color: #FF6600;
+    font-weight: bold;
+    font-size: 16px;
+}
+.xmr-checkout-discount .xmr-discounted-price,
+.xmr-checkout-savings .xmr-discounted-price,
+.xmr-discount-banner .xmr-discounted-price {
+    color: #1a7a1a;
+    font-weight: 700;
+    font-size: 18px;
+}
+.xmr-checkout-discount .xmr-savings-text,
+.xmr-checkout-savings .xmr-savings-text,
+.xmr-discount-banner .xmr-savings-text {
+    color: #333;
+    font-size: 14px;
+}
+
+/* === Checkout Payment Methods - Make radio options more visible === */
+.wc-block-components-radio-control .wc-block-components-radio-control__option {
+    border: 2px solid #ddd !important;
+    border-radius: 8px !important;
+    padding: 14px 16px !important;
+    margin-bottom: 8px !important;
+    transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease !important;
+    cursor: pointer !important;
+}
+.wc-block-components-radio-control .wc-block-components-radio-control__option:hover {
+    border-color: #999 !important;
+    background-color: #fafafa !important;
+}
+.wc-block-components-radio-control .wc-block-components-radio-control__option-checked {
+    border-color: #FF6600 !important;
+    background-color: #fff7f0 !important;
+    box-shadow: 0 0 0 1px #FF6600 !important;
+}
+.wc-block-components-radio-control .wc-block-components-radio-control__input {
+    width: 20px !important;
+    height: 20px !important;
+    accent-color: #FF6600 !important;
+}
+
+/* === Monero Payment Page === */
+
+/* Status messages - hide all by default */
+#monero_payment_messages > span { display: none; }
+
+/* ── Payment Section Container ── */
+.xmr-payment-section {
+    max-width: 680px;
+    margin: 24px auto;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ── Status Tracker (step indicators) ── */
+.xmr-status-tracker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    padding: 20px 10px;
+}
+.xmr-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+}
+.xmr-step-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #e8e8e8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.4s ease;
+    position: relative;
+}
+.xmr-step-icon svg { width: 22px !important; height: 22px !important; max-width: 22px; max-height: 22px; display: none; }
+.xmr-step-icon .xmr-spinner { color: #fff; }
+.xmr-step-icon .xmr-check { color: #fff; }
+.xmr-step-icon .xmr-x { color: #fff; }
+.xmr-step-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: color 0.3s;
+    white-space: nowrap;
+}
+.xmr-step-line {
+    flex: 1;
+    height: 3px;
+    background: #e0e0e0;
+    margin: 0 6px;
+    margin-bottom: 28px;
+    border-radius: 2px;
+    transition: background 0.4s;
+    min-width: 40px;
+}
+
+/* Step states */
+.xmr-step.active .xmr-step-icon {
+    background: #FF6600;
+    box-shadow: 0 0 0 6px rgba(255, 102, 0, 0.15);
+}
+.xmr-step.active .xmr-step-icon .xmr-spinner { display: block !important; }
+.xmr-step.active .xmr-step-label { color: #FF6600; }
+
+.xmr-step.done .xmr-step-icon {
+    background: #22c55e;
+}
+.xmr-step.done .xmr-step-icon .xmr-check { display: block !important; }
+.xmr-step.done .xmr-step-label { color: #22c55e; }
+
+.xmr-step.error .xmr-step-icon {
+    background: #dc2626;
+}
+.xmr-step.error .xmr-step-icon .xmr-x { display: block !important; }
+.xmr-step.error .xmr-step-label { color: #dc2626; }
+
+.xmr-step-line.done { background: #22c55e; }
+.xmr-step-line.active { background: linear-gradient(90deg, #22c55e, #FF6600); }
+
+/* Spinner animation */
+.xmr-spinner circle {
+    stroke: rgba(255,255,255,0.3);
+}
+.xmr-spinner circle {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: 0;
+    stroke-linecap: round;
+    animation: xmr-spin 1.2s ease-in-out infinite;
+    stroke: #fff;
+}
+@keyframes xmr-spin {
+    0% { stroke-dasharray: 1, 150; stroke-dashoffset: 0; }
+    50% { stroke-dasharray: 90, 150; stroke-dashoffset: -35; }
+    100% { stroke-dasharray: 90, 150; stroke-dashoffset: -124; }
+}
+
+/* ── Status Message ── */
+.xmr-status-message {
+    text-align: center;
+    font-size: 15px;
+    line-height: 1.5;
+    color: #444;
+    padding: 0 16px 16px;
+}
+.xmr-status-message a { color: #FF6600; text-decoration: underline; }
+
+/* ── Discount Banner ── */
+.xmr-discount-banner {
+    background: linear-gradient(135deg, #fff7f0, #fff3e6);
+    border: 2px solid #FF6600;
+    text-align: center;
+    padding: 14px 18px;
+    border-radius: 10px;
+    font-size: 14px;
+    margin-bottom: 16px;
+}
+.xmr-discount-banner .xmr-savings-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 6px;
+    font-size: 16px;
+}
+
+/* ── Payment Card ── */
+.xmr-payment-card {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+}
+.xmr-field { margin-bottom: 16px; }
+.xmr-field:last-child { margin-bottom: 0; }
+.xmr-field label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 6px;
+}
+.xmr-field-value {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #1a1a1a;
+}
+.xmr-address {
+    word-break: break-all;
+    line-height: 1.4;
+    font-family: 'SF Mono', 'Consolas', 'Monaco', monospace;
+    font-size: 13px;
+    flex: 1;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 10px 12px;
+}
+.xmr-actions {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+/* Buttons */
+.xmr-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db !important;
+    background: #fff !important;
+    color: #555 !important;
+    cursor: pointer;
+    transition: all 0.15s;
+    padding: 0;
+    -webkit-appearance: none;
+    appearance: none;
+}
+.xmr-btn svg {
+    display: block !important;
+    width: 18px !important;
+    height: 18px !important;
+    flex-shrink: 0;
+    stroke: #555;
+    fill: none;
+}
+.xmr-btn.xmr-btn-qr svg {
+    fill: #555;
+    stroke: none;
+}
+.xmr-btn:hover {
+    background: #FF6600 !important;
+    color: #fff !important;
+    border-color: #FF6600 !important;
+}
+.xmr-btn:hover svg {
+    stroke: #fff;
+}
+.xmr-btn.xmr-btn-qr:hover svg {
+    fill: #fff;
+    stroke: none;
+}
+
+/* Amounts row */
+.xmr-amounts {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+.xmr-field-amount, .xmr-field-paid {
+    flex: 1;
+    margin-bottom: 0;
+}
+.xmr-amount-value {
+    font-size: 16px;
+    font-weight: 700;
+    font-family: 'SF Mono', 'Consolas', 'Monaco', monospace;
+}
+.xmr-currency {
+    color: #FF6600;
+    font-weight: 600;
+}
+
+/* Exchange rate */
+.xmr-rate-field .xmr-field-value {
+    font-size: 13px;
+    color: #666;
+}
+
+/* ── Transactions Table ── */
+#monero_tx_section { margin-bottom: 16px; }
+#monero_tx_table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+}
+#monero_tx_table thead th {
+    background: #f3f4f6;
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #666;
+    letter-spacing: 0.5px;
+}
+#monero_tx_table tbody td {
+    padding: 10px 12px;
+    border-top: 1px solid #f0f0f0;
+    word-break: break-all;
+}
+#monero_tx_table tbody a { color: #FF6600; text-decoration: none; }
+#monero_tx_table tbody a:hover { text-decoration: underline; }
+
+/* ── QR Code Overlay ── */
+#monero_qr_code_container {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 9999;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px);
+}
+#monero_qr_code {
+    position: absolute;
+    width: 256px; height: 256px;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 24px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+}
+
+/* ── Toast Notifications ── */
+#monero_toast {
+    position: fixed;
+    z-index: 9999;
+    top: 32px;
+    right: 12px;
+}
+#monero_toast > div {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    margin-top: 10px;
+    padding: 14px 20px;
+    width: 320px;
+    border-radius: 8px;
+    color: white;
+    right: -400px;
+    font-size: 14px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+#monero_toast > div.success { background: rgba(34, 197, 94, 0.95); }
+#monero_toast > div.error { background: rgba(220, 38, 38, 0.95); }
+
+/* ── Open in Wallet Button ── */
+.xmr-wallet-action {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin: 16px 0;
+    padding-top: 16px;
+    border-top: 1px solid #f0f0f0;
+}
+.xmr-wallet-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 28px;
+    background: #FF6600 !important;
+    color: #fff !important;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 10px;
+    border: none;
+    text-decoration: none !important;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(255, 102, 0, 0.3);
+}
+.xmr-wallet-btn:hover {
+    background: #e55b00 !important;
+    color: #fff !important;
+    box-shadow: 0 4px 16px rgba(255, 102, 0, 0.4);
+    transform: translateY(-1px);
+}
+.xmr-wallet-btn svg {
+    stroke: #fff;
+    flex-shrink: 0;
+}
+
+/* ── Wallet Prompt (after copy) ── */
+.xmr-wallet-prompt {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    margin-top: 10px;
+    padding: 12px 16px;
+    width: 320px;
+    border-radius: 8px;
+    background: rgba(255, 102, 0, 0.95);
+    color: white;
+    right: -400px;
+    font-size: 14px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.xmr-prompt-open {
+    display: inline-block;
+    padding: 5px 14px;
+    background: #fff;
+    color: #FF6600 !important;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 13px;
+    text-decoration: none !important;
+    white-space: nowrap;
+    transition: background 0.15s;
+}
+.xmr-prompt-open:hover {
+    background: #f0f0f0;
+}
+.xmr-prompt-dismiss {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.7);
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0 4px;
+    line-height: 1;
+}
+.xmr-prompt-dismiss:hover {
+    color: #fff;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .xmr-payment-section { margin: 16px auto; }
+    .xmr-status-tracker { padding: 16px 4px; gap: 0; }
+    .xmr-step-label { font-size: 10px; letter-spacing: 0; }
+    .xmr-step-icon { width: 36px; height: 36px; }
+    .xmr-step-icon svg { width: 18px !important; height: 18px !important; }
+    .xmr-step-line { min-width: 24px; margin: 0 4px; margin-bottom: 26px; }
+    .xmr-status-message { font-size: 14px; padding: 0 8px 12px; }
+    .xmr-discount-banner { font-size: 13px; padding: 8px 12px; margin-bottom: 12px; border-radius: 6px; }
+    .xmr-payment-card { padding: 14px; border-radius: 8px; }
+    .xmr-field-value { flex-wrap: wrap; }
+    .xmr-address { font-size: 11px; padding: 8px 10px; min-width: 0; }
+    .xmr-actions { gap: 6px; }
+    .xmr-btn { width: 36px; height: 36px; }
+    .xmr-amounts { flex-direction: column; gap: 12px; }
+    .xmr-amount-value { font-size: 14px; }
+    #monero_tx_table { font-size: 11px; }
+    #monero_tx_table thead th, #monero_tx_table tbody td { padding: 8px 6px; }
+    #monero_qr_code { width: 220px; height: 220px; padding: 16px; }
+    #monero_toast > div { width: 280px; font-size: 13px; padding: 12px 16px; }
+    .xmr-wallet-btn { padding: 10px 22px; font-size: 14px; }
+    .xmr-wallet-prompt { width: 280px; font-size: 13px; }
+}
+@media (max-width: 400px) {
+    .xmr-step-label { font-size: 9px; }
+    .xmr-step-icon { width: 32px; height: 32px; }
+    .xmr-step-icon svg { width: 16px !important; height: 16px !important; }
+    .xmr-step-line { min-width: 16px; }
+    .xmr-address { font-size: 10px; }
+    .xmr-amount-value { font-size: 12px; }
+    .xmr-payment-card { padding: 10px; }
+}
